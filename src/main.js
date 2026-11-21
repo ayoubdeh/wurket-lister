@@ -61,9 +61,12 @@ async function usePhoto(fileOrBlob) {
   $('preview').src = photo.dataUrl; $('preview').hidden = false; $('dropText').hidden = true; $('draft').disabled = false;
 }
 $('photo').onchange = e => { const f = e.target.files[0]; if (f) usePhoto(f); };
-document.querySelectorAll('[data-sample]').forEach(b => b.onclick = async () => {
-  const blob = await (await fetch(`./demo-photos/${b.dataset.sample}`)).blob();
-  usePhoto(blob);
+// Sample photos are preloaded so they also work offline.
+const samples = {};
+document.querySelectorAll('[data-sample]').forEach(b => {
+  const name = b.dataset.sample;
+  samples[name] = fetch(`./demo-photos/${name}`).then(r => r.blob()).catch(() => null);
+  b.onclick = async () => { const blob = await samples[name]; if (blob) usePhoto(blob); else toast('Sample photo not available offline'); };
 });
 function downscale(file, max) {
   return new Promise((res, rej) => {
