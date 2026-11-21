@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wurket Lister</title>
+  <meta name="description" content="Snap a product, get a ready-to-sell listing. Hybrid AI that runs on your device with Gemini Nano and falls back to the cloud." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23E00065'/><text x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='Arial' font-weight='700'>W</text></svg>" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo">W</span>
+      <div>
+        <h1>Wurket Lister</h1>
+        <p class="tag">Snap a product. Get a listing. Private by default.</p>
+      </div>
+    </div>
+    <div class="status">
+      <span id="net" class="chip">online</span>
+      <span id="device" class="chip">checking device…</span>
+      <button id="prepare" class="ghost small" hidden>Download on-device model</button>
+    </div>
+  </header>
+
+  <nav class="modes" aria-label="Inference mode">
+    <span>AI runs:</span>
+    <label><input type="radio" name="mode" value="auto" checked /> Hybrid (device first)</label>
+    <label><input type="radio" name="mode" value="device" /> On-device only</label>
+    <label><input type="radio" name="mode" value="cloud" /> Cloud only</label>
+  </nav>
+
+  <main>
+    <section class="card" id="new">
+      <h2>1. New listing</h2>
+      <div class="grid2">
+        <div>
+          <label class="drop" id="drop">
+            <input id="photo" type="file" accept="image/jpeg,image/png" capture="environment" hidden />
+            <img id="preview" alt="" hidden />
+            <span id="dropText">📷 Take or choose a product photo</span>
+          </label>
+          <div class="samples">No photo handy? Try:
+            <button class="ghost small" data-sample="babouches.jpg">Babouches</button>
+            <button class="ghost small" data-sample="tajine.jpg">Tajine</button>
+            <button class="ghost small" data-sample="leather_bag.jpg">Leather bag</button>
+          </div>
+          <label class="field">Anything the photo doesn't show? (optional)
+            <textarea id="note" rows="3" placeholder="e.g. size 42, worn twice, 350 dh, box included"></textarea>
+          </label>
+          <button id="draft" class="primary" disabled>Draft listing</button>
+        </div>
+        <div id="result" class="result" hidden>
+          <div class="row between"><strong>Draft</strong><span id="draftBadge" class="badge"></span></div>
+          <label class="field">Title <input id="title" maxlength="90" /></label>
+          <label class="field">Description <textarea id="desc" rows="4"></textarea></label>
+          <div class="row">
+            <label class="field grow">Category <select id="category"></select></label>
+            <label class="field grow">Condition <select id="condition"></select></label>
+            <label class="field price">Price <input id="price" type="number" min="0" /></label>
+          </div>
+          <div id="attrs" class="attrs"></div>
+          <div id="tags" class="tags"></div>
+          <div id="missing" class="missing" hidden></div>
+          <div class="row wrap">
+            <button id="trFr" class="ghost">Translate → Français</button>
+            <button id="trAr" class="ghost">Translate → العربية</button>
+            <button id="save" class="primary">Save listing</button>
+          </div>
+          <div id="translations"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="reply">
+      <h2>2. Answer a buyer</h2>
+      <p class="hint">Paste a buyer's WhatsApp or Instagram message. When the on-device model is available, the conversation never leaves this device.</p>
+      <div class="row">
+        <select id="replyListing" class="grow"></select>
+      </div>
+      <textarea id="buyerMsg" rows="2" placeholder="e.g. Salam, is it still available? Can you deliver to Agadir?"></textarea>
+      <button id="replyBtn" class="primary">Draft reply</button>
+      <div id="replyOut" class="out" hidden><div class="row between"><strong>Suggested reply</strong><span id="replyBadge" class="badge"></span></div><p id="replyText"></p><button id="copyReply" class="ghost small">Copy</button></div>
+    </section>
+
+    <section class="card" id="mine">
+      <div class="row between">
+        <h2>3. My listings</h2>
+        <div class="row wrap">
+          <button id="sync" class="ghost small">Sync to cloud</button>
+          <button id="csv" class="ghost small">Export CSV</button>
+        </div>
+      </div>
+      <p id="syncState" class="hint"></p>
+      <ul id="list" class="list"></ul>
+    </section>
+
+    <section class="card how">
+      <h2>How it works</h2>
+      <ol>
+        <li><b>Hybrid AI.</b> Every request goes through Firebase AI Logic with <code>PREFER_ON_DEVICE</code>. Chrome's built-in Gemini Nano answers when it's available; otherwise the SDK falls back to Gemini in the cloud. Each result shows where it ran and how long it took.</li>
+        <li><b>Structured output.</b> Listings come back as JSON constrained by one schema (on-device <code>responseConstraint</code>, cloud <code>responseSchema</code>), so categories and conditions are always valid.</li>
+        <li><b>Offline first.</b> Listings are stored on the device and synced to Firestore (anonymous Auth) when you're online. Photos never leave the device unless cloud inference is needed.</li>
+        <li><b>Remote Config</b> sets the cloud model, currency and writing style; <b>App Check</b> protects the Gemini API.</li>
+      </ol>
+    </section>
+  </main>
+  <footer>Open source (Apache-2.0) · Built for small sellers in Morocco by the team behind <a href="https://wurket.com" target="_blank" rel="noopener">Wurket</a>.</footer>
+  <div id="toast" class="toast" hidden></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

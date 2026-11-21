@@ -1,0 +1,20 @@
+{
+  "name": "wurket-lister",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "description": "Hybrid on-device/cloud AI listing assistant for small sellers (Firebase AI Logic + Gemini Nano).",
+  "dependencies": {
+    "firebase": "^13.4.0"
+  },
+  "devDependencies": {
+    "vite": "^6.4.6"
+  },
+  "private": true
+}
