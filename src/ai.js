@@ -98,6 +98,7 @@ export async function draftListing({ photoBase64, note, mode, cfg }) {
   const prompt = [
     `You help small sellers in Morocco list products on ${cfg.marketplace}, an online marketplace with cash on delivery.`,
     `Look at the product photo and write a listing in English. ${cfg.listingStyle}`,
+    'Describe only the item being sold. Ignore food, props, people and background in the photo; never list them as included.',
     'Only state what you can see or what the seller wrote. Never invent brands, sizes or specs; list unknowns in missing_info instead.',
     `If the seller gave a price, put it in "price" (number, ${cfg.currency}); otherwise 0.`,
     `Seller note: ${note?.trim() || '(none)'}`,

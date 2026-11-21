@@ -100,7 +100,7 @@ function renderDraft() {
   $('price').value = current.price || '';
   $('attrs').innerHTML = (current.attributes || []).map(a => `<span><b>${esc(a.name)}:</b> ${esc(a.value)}</span>`).join('');
   $('tags').innerHTML = (current.tags || []).slice(0, 8).map(t => `<span>#${esc(String(t).replace(/^#/, '').replace(/\s+/g, ''))}</span>`).join('');
-  const miss = current.missing_info || [];
+  const miss = (current.missing_info || []).map(s => String(s).trim()).filter(Boolean);
   $('missing').hidden = !miss.length;
   $('missing').innerHTML = `<b>Buyers will ask:</b> ${miss.map(esc).join(' · ')}. Add it to the note and draft again, or edit the text.`;
   $('translations').innerHTML = '';
