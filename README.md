@@ -4,7 +4,7 @@
 
 Built for [#BuildHybridAI 2026](https://firebasehybridaihackathon.devpost.com/) with **Firebase AI Logic hybrid inference** (Web / Chrome).
 
-Live demo: https://ayoubdeh.github.io/wurket-lister/
+Live demo: https://ayoubdeh.github.io/wurket-lister/ · Demo video: https://youtu.be/1yDMDKFnwb4
 
 ## The problem
 
